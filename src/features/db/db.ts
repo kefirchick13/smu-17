@@ -4,7 +4,7 @@ import { Pool, type PoolConfig } from "pg";
 
 let _pool: Pool | null = null;
 
-/** Порт из env; если не задан — не передаём в `pg`, библиотека использует стандартный IANA-порт PostgreSQL. */
+/** Порт из env; если не задан — не передаём в `pg`, клиент подставляет порт по умолчанию для PG. */
 function optionalEnvPort(): number | undefined {
   const raw = env("POSTGRES_PORT") ?? env("PGPORT");
   if (raw === undefined || raw.trim() === "") return undefined;

@@ -93,7 +93,7 @@ export async function listProjects(
   const safeOffset = Math.max(0, Math.floor(offset));
   const pool = getPool();
   if (!pool) {
-    console.warn("[listProjects] DATABASE_URL / POSTGRES_* не заданы — список пуст");
+    console.warn("[listProjects] DATABASE_URL / PG_* не заданы — список пуст");
     return { projects: [], total: 0 };
   }
 

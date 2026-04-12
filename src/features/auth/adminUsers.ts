@@ -21,7 +21,7 @@ export async function verifyAdminCredentials(
       reason: "db_error",
       diagnostics: {
         summaryRu: "Пул БД не создан: переменная DATABASE_URL не задана в окружении (Netlify).",
-        hintRu: "Вставьте URI из Supabase → Connect → Session pooler: пользователь postgres.<ref>, база postgres.",
+        hintRu: "Вставьте URI из Supabase → Connect → Session pooler без изменений из мастера.",
       },
     };
   }

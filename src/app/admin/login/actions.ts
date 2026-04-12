@@ -36,7 +36,7 @@ export async function login(
   if (!getPool()) {
     return {
       error:
-        "База не подключена: в Netlify (Supabase → Connect → Session pooler: пользователь postgres.<project-ref>, база postgres, пароль из Database).",
+        "База не подключена: задайте DATABASE_URL в Netlify (скопируйте URI из Supabase → Connect → Session pooler).",
     };
   }
 

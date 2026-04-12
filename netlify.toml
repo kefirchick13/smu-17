@@ -1,7 +1,5 @@
-# Обязательные переменные (Site configuration → Environment variables → Production):
-#   DATABASE_URL — строка из Supabase (pooler Session/Transaction, порт 6543 или 5432;
-#     при ошибках SSL добавьте ?sslmode=require в конец URL)
-#   AUTH_SECRET — случайная строка (openssl rand -hex 32), для сессии админки
-# Опционально: PG_POOL_MAX=2 — меньше соединений на инстанс serverless
+# Обязательные: DATABASE_URL, AUTH_SECRET (см. комментарии в репозитории / дашборд Supabase).
+# Значения POSTGRES_* в Netlify часто совпадают с обычным текстом в коде — не сканируем эти ключи.
 [build.environment]
   NODE_VERSION = "20"
+  SECRETS_SCAN_OMIT_KEYS = "POSTGRES_USER,POSTGRES_PORT"

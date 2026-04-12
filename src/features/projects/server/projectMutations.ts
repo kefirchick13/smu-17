@@ -17,7 +17,7 @@ function formatInsertError(e: unknown): string {
         return "Таблица projects не найдена — примените миграции.";
       case "ECONNREFUSED":
       case "ETIMEDOUT":
-        return "Не удаётся подключиться к PostgreSQL (сеть / хост / порт).";
+        return "Не удаётся подключиться к базе (сеть / хост / порт).";
       default:
         break;
     }

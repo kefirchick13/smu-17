@@ -13,7 +13,7 @@ export async function GET() {
       summaryRu:
         "DATABASE_URL не задан — задайте в Netlify переменную с URI из Supabase (Session pooler).",
       hintRu:
-        "Формат: postgresql://postgres.<ref>:[PASSWORD]@aws-….pooler.supabase.com:5432/postgres",
+        "Скопируйте готовую строку из Dashboard → Connect → Session pooler (роль и хост совпадают с мастером).",
     });
   }
   try {

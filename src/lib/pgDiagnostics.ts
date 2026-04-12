@@ -5,11 +5,11 @@ export type PgDiagnostics = {
 };
 
 function stripSecrets(message: string): string {
-  return message.replace(/postgres(ql)?:\/\/[^\s"'<>]+/gi, "postgresql://[скрыто]");
+  return message.replace(/[a-z][a-z0-9+.-]*:\/\/[^\s"'<>]+/gi, "[URI]");
 }
 
-/** SQLSTATE из ответа PostgreSQL (5 символов, напр. 28P01). */
-function isPostgresProtocolError(
+/** SQLSTATE из ответа СУБД (5 символов, напр. 28P01). */
+function isPgProtocolError(
   err: unknown,
 ): err is { code: string; message: string } {
   if (typeof err !== "object" || err === null) return false;
@@ -18,7 +18,7 @@ function isPostgresProtocolError(
 }
 
 /**
- * Безопасное описание ошибки подключения/запроса к PostgreSQL для UI и /api/health.
+ * Безопасное описание ошибки подключения к БД для UI и /api/health.
  * Не включает пароли и полные URL.
  */
 export function safePgDiagnostics(err: unknown): PgDiagnostics {
@@ -41,7 +41,7 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
     return {
       summaryRu: "Подключение отклонено (ECONNREFUSED). Неверный порт или сервис не слушает.",
       hintRu:
-        "Pooler Supabase: обычно порт 5432 (session) или 6543 (transaction). Сверьтесь с вкладкой Connect.",
+        "Номер порта для session/transaction pooler смотрите в Supabase → Connect (там же готовая строка).",
     };
   }
 
@@ -52,13 +52,13 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
     };
   }
 
-  if (isPostgresProtocolError(err)) {
+  if (isPgProtocolError(err)) {
     const pgCode = err.code;
     if (pgCode === "28P01") {
       return {
         pgCode,
         summaryRu:
-          "PostgreSQL отклонил логин: неверный пароль или имя пользователя в DATABASE_URL.",
+          "Сервер БД отклонил логин: неверный пароль или имя роли в DATABASE_URL.",
         hintRu:
           "Для Session pooler пользователь должен быть другой. Пароль из Database Settings.",
       };
@@ -67,7 +67,7 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
       return {
         pgCode,
         summaryRu: "Указанная в URL база данных не существует.",
-        hintRu: "В Supabase в URI обычно database = postgres.",
+        hintRu: "Имя базы в строке подключения должно совпадать с тем, что в мастере Connect.",
       };
     }
     if (pgCode === "28000") {
@@ -75,7 +75,7 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
         pgCode,
         summaryRu: "Отказ в доступе к роли (invalid authorization specification).",
         hintRu:
-          "Проверьте пользователя postgres.<ref> для pooler и актуальный пароль.",
+          "Сверьте роль и пароль с разделом Connect → pooler в Supabase.",
       };
     }
     return {
@@ -91,7 +91,7 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
     code === "DEPTH_ZERO_SELF_SIGNED_CERT"
   ) {
     return {
-      summaryRu: "Ошибка TLS/SSL при подключении к PostgreSQL.",
+      summaryRu: "Ошибка TLS/SSL при подключении к базе.",
       hintRu:
         "К URL должен быть добавлен ?sslmode=require (для Supabase это делается автоматически, если хост supabase). Проверьте строку в Netlify.",
     };
