@@ -2,6 +2,7 @@
 
 import { verifyAdminCredentials } from "@/features/auth/adminUsers";
 import { createSessionToken, getSessionCookieName } from "@/features/auth/auth";
+import { getPool } from "@/features/db/db";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
@@ -32,9 +33,21 @@ export async function login(
     return { error: "Сервер не настроен (нет AUTH_SECRET)" };
   }
 
-  const ok = await verifyAdminCredentials(email, password);
-  if (!ok) {
-    return { error: "Неверная почта или пароль" };
+  if (!getPool()) {
+    return {
+      error:
+        "База не подключена: в Netlify → Environment variables задайте DATABASE_URL (Supabase → Connect → Session pooler: пользователь postgres.<project-ref>, база postgres, пароль из Database).",
+    };
+  }
+
+  const auth = await verifyAdminCredentials(email, password);
+  if (!auth.ok) {
+    if (auth.reason === "invalid_login") {
+      return { error: "Неверная почта или пароль" };
+    }
+    const { diagnostics } = auth;
+    const parts = [diagnostics.summaryRu, diagnostics.hintRu].filter(Boolean);
+    return { error: parts.join(" ") };
   }
 
   const token = await createSessionToken(

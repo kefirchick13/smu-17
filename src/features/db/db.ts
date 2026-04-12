@@ -1,4 +1,5 @@
 import { env } from "@/lib/env";
+import { normalizeDatabaseUrlForSupabase } from "@/lib/pgDiagnostics";
 import { Pool, type PoolConfig } from "pg";
 
 let _pool: Pool | null = null;
@@ -12,8 +13,9 @@ function optionalEnvPort(): number | undefined {
 }
 
 function buildPoolConfig(): PoolConfig | null {
-  const connectionString = env("DATABASE_URL")?.trim();
-  if (connectionString) {
+  const rawUrl = env("DATABASE_URL")?.trim();
+  if (rawUrl) {
+    const connectionString = normalizeDatabaseUrlForSupabase(rawUrl);
     return {
       connectionString,
       max: Number(env("PG_POOL_MAX") ?? 10),

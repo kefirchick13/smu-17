@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { safePgDiagnostics } from "@/lib/pgDiagnostics";
 import {
   PROJECTS_PAGE_SIZE,
   parseProjectsSearchParams,
