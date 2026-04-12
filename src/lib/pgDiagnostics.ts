@@ -102,3 +102,14 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
     hintRu: "Смотрите логи функции и ответ.",
   };
 }
+
+/**
+ * Для хостов Supabase добавляет sslmode=require, если параметра ещё нет.
+ */
+export function normalizeDatabaseUrlForSupabase(url: string): string {
+  const t = url.trim();
+  if (!/supabase\.(co|com|io)\b/i.test(t)) return t;
+  if (/[?&]sslmode=/i.test(t)) return t;
+  const sep = t.includes("?") ? "&" : "?";
+  return `${t}${sep}sslmode=require`;
+}
