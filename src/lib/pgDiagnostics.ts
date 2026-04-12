@@ -92,8 +92,7 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
   ) {
     return {
       summaryRu: "Ошибка TLS/SSL при подключении к базе.",
-      hintRu:
-        "К URL должен быть добавлен ?sslmode=require (для Supabase это делается автоматически, если хост supabase). Проверьте строку в Netlify.",
+      hintRu: "Проверьте строку подключения и настройки деплоя.",
     };
   }
 
@@ -101,15 +100,4 @@ export function safePgDiagnostics(err: unknown): PgDiagnostics {
     summaryRu: msg.length > 220 ? `${msg.slice(0, 220)}…` : msg,
     hintRu: "Смотрите логи функции и ответ.",
   };
-}
-
-/**
- * Для хостов Supabase добавляет sslmode=require, если параметра ещё нет.
- */
-export function normalizeDatabaseUrlForSupabase(url: string): string {
-  const t = url.trim();
-  if (!/supabase\.(co|com|io)\b/i.test(t)) return t;
-  if (/[?&]sslmode=/i.test(t)) return t;
-  const sep = t.includes("?") ? "&" : "?";
-  return `${t}${sep}sslmode=require`;
 }

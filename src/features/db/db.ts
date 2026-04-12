@@ -1,8 +1,21 @@
 import { env } from "@/lib/env";
-import { normalizeDatabaseUrlForSupabase } from "@/lib/pgDiagnostics";
 import { Pool, type PoolConfig } from "pg";
 
 let _pool: Pool | null = null;
+
+function defaultPoolMax(): number {
+  const fromEnv = env("PG_POOL_MAX");
+  if (fromEnv !== undefined && fromEnv !== "") return Number(fromEnv);
+  if (process.env.NETLIFY === "true" || process.env.AWS_LAMBDA_FUNCTION_NAME)
+    return 2;
+  return 10;
+}
+
+function connectTimeoutMs(): number {
+  const raw = env("PG_CONNECT_TIMEOUT_MS");
+  if (raw !== undefined && raw !== "") return Number(raw);
+  return process.env.NETLIFY === "true" ? 20_000 : 10_000;
+}
 
 /** Порт из env; если не задан — не передаём в `pg`, клиент подставляет порт по умолчанию для PG. */
 function optionalEnvPort(): number | undefined {
@@ -15,12 +28,12 @@ function optionalEnvPort(): number | undefined {
 function buildPoolConfig(): PoolConfig | null {
   const rawUrl = env("DATABASE_URL")?.trim();
   if (rawUrl) {
-    const connectionString = normalizeDatabaseUrlForSupabase(rawUrl);
     return {
-      connectionString,
-      max: Number(env("PG_POOL_MAX") ?? 10),
+      connectionString: rawUrl,
+      max: defaultPoolMax(),
       idleTimeoutMillis: 30_000,
-      connectionTimeoutMillis: 10_000,
+      connectionTimeoutMillis: connectTimeoutMs(),
+      ssl: { rejectUnauthorized: false },
     };
   }
 
@@ -48,9 +61,9 @@ function buildPoolConfig(): PoolConfig | null {
     user,
     password: env("POSTGRES_PASSWORD") ?? env("PGPASSWORD") ?? "",
     database,
-    max: Number(env("PG_POOL_MAX") ?? 10),
+    max: defaultPoolMax(),
     idleTimeoutMillis: 30_000,
-    connectionTimeoutMillis: 10_000,
+    connectionTimeoutMillis: connectTimeoutMs(),
     ...(ssl ? { ssl } : {}),
   };
 }

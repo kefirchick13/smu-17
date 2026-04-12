@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
+/** Netlify — serverless; standalone для Docker / свой хост. */
+const useStandalone =
+  process.env.NETLIFY !== "true" && process.env.VERCEL !== "1";
+
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(useStandalone ? { output: "standalone" as const } : {}),
+  serverExternalPackages: [
+    "pg",
+    "pg-pool",
+    "pg-connection-string",
+    "pgpass",
+    "pg-protocol",
+    "pg-types",
+  ],
   reactCompiler: true,
   turbopack: {
     rules: {

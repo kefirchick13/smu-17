@@ -1,4 +1,6 @@
-# Обязательные: DATABASE_URL, AUTH_SECRET (см. комментарии в репозитории / дашборд Supabase).
+# DATABASE_URL — без query-параметров sslmode / sslrootcert (достаточно user:pass@host:port/db).
+# TLS настраивается в коде пула (pg), не дублируйте в строке.
+# AUTH_SECRET — случайная длинная строка.
 # Значения POSTGRES_* в Netlify часто совпадают с обычным текстом в коде — не сканируем эти ключи.
 [build.environment]
   NODE_VERSION = "20"
