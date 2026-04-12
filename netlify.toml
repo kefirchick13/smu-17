@@ -1,0 +1,4 @@
+# Секреты только в Netlify: Site settings → Environment variables
+# (DATABASE_URL и/или POSTGRES_* / PG* / AUTH_SECRET и т.д.)
+[build.environment]
+  NODE_VERSION = "20"

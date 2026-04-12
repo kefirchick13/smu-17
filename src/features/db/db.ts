@@ -3,6 +3,14 @@ import { Pool, type PoolConfig } from "pg";
 
 let _pool: Pool | null = null;
 
+/** Порт из env; если не задан — не передаём в `pg`, библиотека использует стандартный IANA-порт PostgreSQL. */
+function optionalEnvPort(): number | undefined {
+  const raw = env("POSTGRES_PORT") ?? env("PGPORT");
+  if (raw === undefined || raw.trim() === "") return undefined;
+  const n = Number(raw);
+  return Number.isFinite(n) && n > 0 && n <= 65535 ? n : undefined;
+}
+
 function buildPoolConfig(): PoolConfig | null {
   const connectionString = env("DATABASE_URL")?.trim();
   if (connectionString) {
@@ -16,10 +24,9 @@ function buildPoolConfig(): PoolConfig | null {
 
   const host = env("POSTGRES_HOST")?.trim() ?? env("PGHOST")?.trim();
   const user = env("POSTGRES_USER")?.trim() ?? env("PGUSER")?.trim();
-  const password = env("POSTGRES_PASSWORD") ?? env("PGPASSWORD") ?? "";
   const database =
     env("POSTGRES_DATABASE")?.trim() ?? env("PGDATABASE")?.trim();
-  const port = Number(env("POSTGRES_PORT") ?? env("PGPORT") ?? 5432);
+  const port = optionalEnvPort();
 
   if (!host || !user || !database) {
     return null;
@@ -35,9 +42,9 @@ function buildPoolConfig(): PoolConfig | null {
 
   return {
     host,
-    port,
+    ...(port !== undefined ? { port } : {}),
     user,
-    password,
+    password: env("POSTGRES_PASSWORD") ?? env("PGPASSWORD") ?? "",
     database,
     max: Number(env("PG_POOL_MAX") ?? 10),
     idleTimeoutMillis: 30_000,
