@@ -13,6 +13,7 @@ const nextConfig: NextConfig = {
     "pgpass",
     "pg-protocol",
     "pg-types",
+    "nodemailer",
   ],
   reactCompiler: true,
   turbopack: {

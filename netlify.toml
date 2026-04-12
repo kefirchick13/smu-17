@@ -1,6 +1,9 @@
 # DATABASE_URL — без query-параметров sslmode / sslrootcert (достаточно user:pass@host:port/db).
+# Supabase: Session pooler — IPv4 (подходит для Netlify и обычных сетей). Direct connection — если у клиента только IPv6.
 # TLS настраивается в коде пула (pg), не дублируйте в строке.
 # AUTH_SECRET — случайная длинная строка.
+# Почта заявок: FEEDBACK_SMTP_*, FEEDBACK_MAIL_TO; опционально FEEDBACK_MAIL_FROM, FEEDBACK_MAIL_FROM_NAME,
+# FEEDBACK_SITE_LABEL (подпись «с сайта …» в письме пользователю), FEEDBACK_SMTP_SECURE=true для 465.
 # Значения POSTGRES_* в Netlify часто совпадают с обычным текстом в коде — не сканируем эти ключи.
 [build.environment]
   NODE_VERSION = "20"
