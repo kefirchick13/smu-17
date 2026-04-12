@@ -36,8 +36,14 @@ export async function GET(req: Request) {
     });
   } catch (err) {
     console.error("[GET /api/projects]", err);
+    const d = safePgDiagnostics(err);
     return NextResponse.json(
-      { error: "Не удалось загрузить проекты" },
+      {
+        error: "Не удалось загрузить проекты",
+        summaryRu: d.summaryRu,
+        hintRu: d.hintRu,
+        pgCode: d.pgCode,
+      },
       { status: 500 },
     );
   }
