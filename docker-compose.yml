@@ -1,4 +1,6 @@
-# Переменные для подстановки (${WEB_PORT}, ${POSTGRES_PORT}) и env_file: .env
+# Переменные для подстановки (${APP_HOST_PORT}, ${POSTGRES_PORT}) и env_file: .env
+# APP_HOST_PORT — только для Docker (хост-порт веб-контейнера). На Netlify не задавайте:
+# значение порта часто совпадает с подстроками в бандле и ломает secret scanning.
 # читаются из файла `.env` в корне проекта (скопируйте из `.env.example`).
 # При необходимости: docker compose --env-file ./.env.local up
 
@@ -31,7 +33,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "${WEB_PORT:-3000}:3000"
+      - "${APP_HOST_PORT:-3000}:3000"
 
 volumes:
   pgdata: # Volume для хранения данных PostgreSQL
