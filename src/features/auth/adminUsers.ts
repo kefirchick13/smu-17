@@ -1,7 +1,6 @@
 import { getPool } from "@/features/db/db";
 import { verifyPassword } from "@/features/auth/password";
-import type { PgDiagnostics } from "@/lib/pgDiagnostics";
-import { safePgDiagnostics } from "@/lib/pgDiagnostics";
+import { safePgDiagnostics, type PgDiagnostics } from "@/lib/pgDiagnostics";
 
 export type VerifyAdminResult =
   | { ok: true }
