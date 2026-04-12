@@ -1,0 +1,31 @@
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 10px;
+  background: var(--color-primary);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.tags[data-size="sm"] .tag {
+  padding: 4px 10px;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .tags[data-mobile-size="sm"] .tag {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+  }
+}
+

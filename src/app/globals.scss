@@ -1,0 +1,91 @@
+:root {
+  --color-primary: #850000;
+  --color-bg: #ffffff;
+  --color-bg-muted: #f4f4f5;
+  --color-surface: #ffffff;
+  --color-text: #070000;
+  --color-text-muted: rgba(23, 23, 23, 0.65);
+  --color-border: rgba(23, 23, 23, 0.1);
+  --color-focus: #2563eb;
+  --color-danger: #850000;
+  --color-link: #070000;
+  --color-link-hover: #07000073;
+  --color-button-fg: #ffffff;
+  --color-button-fg-hover: #f0f0f0;
+  --color-button-bg-hover: #070000;
+}
+
+
+@font-face {
+  font-family: 'Bebas Neue';
+  src: url('/fonts/bebasneuecyrillic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Involve Medium';
+  src: url('/fonts/involve/Involve-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+:root {
+  --font-bebas-neue: 'Bebas Neue';
+  --font-involve-medium: 'Involve Medium';
+}
+
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-bebas-neue);
+  margin: 0;
+}
+
+h1 {
+  font-size: 64px;
+  letter-spacing: 0%;
+  font-weight: 400;
+}
+
+p {
+  font-family: var(--font-involve-medium);
+  margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0 auto;
+  max-width: 1440px;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-bg);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-link-hover);
+  }
+}
+
+/* Основной контент страниц (один landmark <main> на страницу) */
+main {
+  flex: 1;
+  min-width: 0;
+}

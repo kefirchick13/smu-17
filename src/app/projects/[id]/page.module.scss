@@ -1,0 +1,175 @@
+.main {
+  margin: 0 auto;
+  max-width: 1440px;
+  padding: 0 48px 48px;
+  display: flex;
+  flex-direction: column;
+}
+
+.projectSections {
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+}
+
+.titleSpecs {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.breadcrumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 24px 0 8px;
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-involve-medium), var(--font-geist-sans), sans-serif;
+}
+
+.crumbSep {
+  color: var(--color-border);
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  min-height: 200px;
+  border-radius: 10px;
+  background-color: var(--color-bg-muted);
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--color-border);
+}
+
+.title {
+  margin: 0;
+  padding: 0;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1.1;
+  max-width: 900px;
+}
+
+.specGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 32px;
+  padding: 0;
+  max-width: 720px;
+}
+
+.specLabel {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  font-family: var(--font-involve-medium), var(--font-geist-sans), sans-serif;
+}
+
+.specValue {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: var(--font-involve-medium), var(--font-geist-sans), sans-serif;
+}
+
+.gallery {
+  margin-top: 0;
+}
+
+.stagesDescriptionRow {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  padding: 0;
+}
+
+.stagesCol {
+  flex: 0 0 38%;
+  max-width: 520px;
+  min-width: 0;
+}
+
+.descCol {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.stagesCol:only-child,
+.descCol:only-child {
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+.blockTitle {
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.stagesList {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-involve-medium), var(--font-geist-sans), sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.descriptionBody {
+  font-family: var(--font-involve-medium), var(--font-geist-sans), sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--color-text);
+  white-space: pre-line;
+  max-width: 900px;
+}
+
+.feedbackSlot {
+  margin: 0 -48px;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 0 16px 32px;
+  }
+
+  .projectSections {
+    gap: 64px;
+  }
+
+  .title {
+    font-size: 32px;
+  }
+
+  .hero {
+    aspect-ratio: 16 / 9;
+  }
+
+  .specGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .blockTitle {
+    font-size: 28px;
+  }
+
+  .feedbackSlot {
+    margin: 0 -16px;
+  }
+}
+
+@media (max-width: 960px) {
+  .stagesDescriptionRow {
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .stagesCol {
+    flex: 1 1 auto;
+    max-width: none;
+  }
+}
