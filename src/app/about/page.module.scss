@@ -433,6 +433,10 @@
 }
 
 @media (max-width: 768px) {
+  .aboutPage {
+    gap: 72px;
+  }
+
   .aboutRequisites {
     padding: 0 16px 32px;
   }
@@ -446,6 +450,10 @@
     min-height: 60vh;
   }
 
+  .aboutHeroContent {
+    padding: 24px 0;
+  }
+
   .aboutHeroTitle {
     font-size: 32px;
   }
@@ -453,6 +461,17 @@
   .aboutHeroActions {
     flex-direction: column;
     max-width: 100%;
+  }
+
+  .aboutFacts,
+  .aboutServices,
+  .aboutHow,
+  .aboutCompanies {
+    padding: 0 16px;
+  }
+
+  .sectionTitle {
+    font-size: 26px;
   }
 
 
@@ -470,5 +489,42 @@
   }
 
   /* HowWeWork section has its own layout */
+}
+
+@media (max-width: 480px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .serviceCard {
+    aspect-ratio: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .serviceImage {
+    position: relative;
+    inset: auto;
+    height: 220px;
+  }
+
+  .serviceTitleBar {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+  }
+
+  .serviceDescription {
+    max-height: none;
+    opacity: 1;
+    margin-top: 8px;
+    overflow: visible;
+  }
+
+  .serviceDescriptionText,
+  .serviceDescriptionList {
+    overflow-wrap: anywhere;
+  }
 }
 

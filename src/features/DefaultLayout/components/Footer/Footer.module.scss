@@ -78,3 +78,40 @@
       text-decoration: none;
     }
   }
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 0 16px 32px;
+
+    .frameWrapper {
+      height: 104px;
+      justify-content: flex-start;
+    }
+
+    .companyLogo {
+      max-width: 180px;
+      height: auto;
+    }
+
+    .info {
+      flex-direction: column;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .links {
+      gap: 12px;
+    }
+
+    .contact {
+      gap: 12px;
+      width: 100%;
+    }
+
+    .email,
+    .address {
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+  }
+}
