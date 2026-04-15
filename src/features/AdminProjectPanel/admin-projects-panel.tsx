@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState, type ChangeEvent } from "react";
 import type { Project } from "@/features/projects/model/types";
 import {
   deleteProjectAction,
@@ -12,6 +12,11 @@ import styles from "./admin-projects-panel.module.scss";
 type Props = {
   projects: Project[];
   dbAvailable: boolean;
+};
+
+type UploadState = {
+  cover: { uploading: boolean; error: string | null };
+  gallery: { uploading: boolean; error: string | null };
 };
 
 function projectToFormDefaults(p: Project) {
@@ -31,10 +36,107 @@ function projectToFormDefaults(p: Project) {
   };
 }
 
+async function uploadAdminFiles(files: File[]): Promise<string[]> {
+  const form = new FormData();
+  for (const f of files) form.append("files", f);
+
+  const res = await fetch("/api/admin/upload", {
+    method: "POST",
+    body: form,
+    credentials: "include",
+  });
+  const contentType = res.headers.get("content-type") ?? "";
+
+  // If not logged in, `requireAdmin()` redirects to HTML login page.
+  if (res.redirected || !contentType.includes("application/json")) {
+    throw new Error("not_authorized");
+  }
+  if (!res.ok) throw new Error("upload_failed");
+
+  const data = (await res.json()) as { urls?: string[]; error?: string };
+  if (!data.urls || data.urls.length === 0) {
+    throw new Error("upload_failed");
+  }
+  return data.urls;
+}
+
 export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const imageSrcRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLTextAreaElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const wasPendingRef = useRef(false);
+  const [uploadState, setUploadState] = useState<UploadState>({
+    cover: { uploading: false, error: null },
+    gallery: { uploading: false, error: null },
+  });
+
+  const resetUploadState = () =>
+    setUploadState({
+      cover: { uploading: false, error: null },
+      gallery: { uploading: false, error: null },
+    });
+
+  const handleCoverFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.currentTarget.files?.[0];
+    e.currentTarget.value = "";
+    if (!f) return;
+
+    setUploadState((s) => ({ ...s, cover: { uploading: true, error: null } }));
+    try {
+      const [url] = await uploadAdminFiles([f]);
+      if (imageSrcRef.current) imageSrcRef.current.value = url;
+    } catch {
+      console.error("[admin upload] cover failed");
+      setUploadState((s) => ({
+        ...s,
+        cover: {
+          uploading: false,
+          error:
+            "Не удалось загрузить файл. Проверьте, что вы вошли в админку, и попробуйте ещё раз.",
+        },
+      }));
+      return;
+    }
+    setUploadState((s) => ({ ...s, cover: { uploading: false, error: null } }));
+  };
+
+  const handleGalleryFilesChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const list = e.currentTarget.files?.[0];
+    e.currentTarget.value = "";
+    
+    if (!list) return;
+    const files = [list];
+
+    setUploadState((s) => ({
+      ...s,
+      gallery: { uploading: true, error: null },
+    }));
+    try {
+      const urls = await uploadAdminFiles(files);
+      if (galleryRef.current) {
+        const existing = galleryRef.current.value.trim();
+        const next = [...(existing ? [existing] : []), ...urls].join("\n");
+        galleryRef.current.value = next;
+        
+      }
+    } catch {
+      console.error("[admin upload] gallery failed");
+      setUploadState((s) => ({
+        ...s,
+        gallery: {
+          uploading: false,
+          error:
+            "Не удалось загрузить файлы. Проверьте, что вы вошли в админку, и попробуйте ещё раз.",
+        },
+      }));
+      return;
+    }
+      setUploadState((s) => ({
+        ...s,
+        gallery: { uploading: false, error: null },
+      }));
+  };
 
   const [state, formAction, pending] = useActionState<
     AdminProjectFormState,
@@ -60,6 +162,7 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
         queueMicrotask(() => {
           setEditingId(null);
           formRef.current?.reset();
+          resetUploadState();
         });
       }
     }
@@ -202,28 +305,51 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
             </label>
           </div>
           <label className={styles.label}>
-            Обложка для списка (URL картинки)
+            Обложка для списка
             <input
               className={styles.input}
               name="imageSrc"
               type="text"
               inputMode="url"
-              placeholder="https://example.com/cover.jpg"
+              placeholder="Выберите файл — он будет загружен на сервер и ссылка подставится автоматически."
               disabled={!dbAvailable || pending}
               defaultValue={defaults?.imageSrc}
+              ref={imageSrcRef}
+              readOnly
+            />
+            <input
+              className={styles.input}
+              type="file"
+              accept="image/*"
+              disabled={
+                !dbAvailable || pending || uploadState.cover.uploading
+              }
+              onChange={handleCoverFileChange}
             />
           </label>
           <label className={styles.label}>
-            Галерея карточки — несколько картинок (URL)
+            Галерея карточки
             <textarea
               className={styles.textarea}
               name="galleryRaw"
               rows={4}
               placeholder={
-                "По одному URL на строку или через запятую:\nhttps://example.com/a.jpg\nhttps://example.com/b.jpg"
+                "Выберите файлы — они будут загружены на сервер и ссылки подставятся автоматически."
               }
               disabled={!dbAvailable || pending}
               defaultValue={defaults?.galleryRaw}
+              ref={galleryRef}
+              readOnly
+            />
+            <input
+              className={styles.input}
+              type="file"
+              accept="image/*"
+              multiple
+              disabled={
+                !dbAvailable || pending || uploadState.gallery.uploading
+              }
+              onChange={handleGalleryFilesChange}
             />
             <span className={styles.hint}>
               Если обложка пуста, первый URL из галереи станет обложкой в списке
@@ -254,7 +380,10 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
                 type="button"
                 className={styles.cancelBtn}
                 disabled={!dbAvailable || pending}
-                onClick={() => setEditingId(null)}
+                onClick={() => {
+                  setEditingId(null);
+                  resetUploadState();
+                }}
               >
                 Отмена
               </button>
@@ -299,7 +428,10 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
                     type="button"
                     className={styles.editBtn}
                     disabled={!dbAvailable}
-                    onClick={() => setEditingId(p.id)}
+                    onClick={() => {
+                      setEditingId(p.id);
+                      resetUploadState();
+                    }}
                   >
                     Редактировать
                   </button>
