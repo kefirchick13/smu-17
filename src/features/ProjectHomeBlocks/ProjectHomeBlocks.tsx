@@ -14,7 +14,6 @@ export function ProjectHomeBlocks() {
     const industrialProjects = await fetch("/api/projects?type=industrial");
     const warehouseProjects = await fetch("/api/projects?type=warehouse");
     const angarProjects = await fetch("/api/projects?type=angar");
-    console.log(industrialProjects, warehouseProjects, angarProjects);
     setIndustrialProjectsCount((await industrialProjects.json()).projects.length);
     setWarehouseProjectsCount((await warehouseProjects.json()).projects.length);
     setAngarProjectsCount((await angarProjects.json()).projects.length);
