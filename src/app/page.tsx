@@ -5,11 +5,13 @@ import Link from "next/link";
 import LinkIcon from "@public/icons/link-icon.svg";
 import Image from "next/image";
 import { HomeProjectsCarousel } from "@/features/HomeProjectsCarousel/HomeProjectsCarousel";
+import { ProjectHomeBlocks } from "@/features/ProjectHomeBlocks/ProjectHomeBlocks";
 
 /** Список из БД — не кэшируем как статику (хост `db` и т.п. недоступны при `next build`). */
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
+
   return (
     <>
       <div className={styles.homePage}>
@@ -95,54 +97,8 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
-        <section className={styles.homeProjectsTypes}>
-          <div className={styles.homeProjectsTypesItemsContainer}>
-            <div className={styles.firstColumn}>
-              <h1 className={styles.homeProjectsTypesTitle}>
-                Что мы строим
-              </h1>
-              <Link
-                href="/projects?type=industrial"
-                className={styles.projectTypeContainer}
-                style={{
-                  backgroundImage: "url('/images/industrial-buildings.png')",
-                }}
-              >
-                <div className={styles.projectTypeContent}>
-                  <div className={styles.projectTypeContentTitle}>Промышленные объекты</div>
-                  <div className={styles.projectTypeContentDescription}>
-                    <div className={styles.projectTypeContentAmount}>7 объектов</div>
-                    <div className={styles.projectTypeContentLink}>
-                      Смотреть проекты <LinkIcon />
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-
-            <div className={styles.secondColumn}>
-              <Link href="/projects?type=warehouse" className={styles.projectTypeContainer} style={{ backgroundImage: "url('/images/warehouses.png')", }}>
-                <div className={styles.projectTypeContent}>
-                  <div className={styles.projectTypeContentTitle}>Складские объекты</div>
-                  <div className={styles.projectTypeContentDescription}>
-                    <div className={styles.projectTypeContentAmount}>3 объекта</div>
-                    <div className={styles.projectTypeContentLink} >Смотреть проекты <LinkIcon /></div>
-                  </div>
-                </div>
-              </Link>
-
-              <Link href="/projects?type=angar" className={styles.projectTypeContainer} style={{ backgroundImage: "url('/images/angars.png')", }}>
-                <div className={styles.projectTypeContent}>
-                  <div className={styles.projectTypeContentTitle}>Ангары</div>
-                  <div className={styles.projectTypeContentDescription}>
-                    <div className={styles.projectTypeContentAmount}>12 объектов</div>
-                    <div className={styles.projectTypeContentLink} >Смотреть проекты <LinkIcon /></div>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </div>
-        </section>
+          <ProjectHomeBlocks />
+          
         <section className={styles.howWeWork}>
         <h1 className={styles.howWeWorkTitle}>Как мы работаем</h1>
           <div className={styles.howWeWorkColumnsContainer}>

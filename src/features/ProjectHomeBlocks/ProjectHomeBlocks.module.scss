@@ -1,0 +1,132 @@
+.homeProjectsTypes {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 1440px;
+  padding: 0 48px;
+  margin: 0 auto;
+
+  .homeProjectsTypesItemsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+
+  .firstColumn {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    height: 600px;
+  }
+  
+  .secondColumn {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .projectTypeContainer {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    flex: 1;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: scale 0.2s ease;
+    &:hover {
+      scale: 1.05;
+    }
+  }
+  
+  .projectTypeContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: var(--color-button-fg);
+    background-color: rgba(7, 0, 0, 0.45); ;
+    width: 100%;
+    padding: 24px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    .projectTypeContentTitle {
+      font-size: 32px;
+      font-weight: 500;
+    }
+
+    .projectTypeContentDescription {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .projectTypeContentAmount {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-button-fg);
+    }
+
+    .projectTypeContentLink {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--color-button-fg);
+      text-decoration: none;
+      &:hover {
+        color: var(--color-button-fg-hover);
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 16px;
+    gap: 24px;
+
+    .homeProjectsTypesItemsContainer {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .firstColumn {
+      height: auto;
+      gap: 16px;
+    }
+
+    .secondColumn {
+      gap: 16px;
+    }
+
+    .projectTypeContainer {
+      min-height: 220px;
+    }
+
+    .projectTypeContent {
+      padding: 16px;
+      gap: 12px;
+
+      .projectTypeContentTitle {
+        font-size: 22px;
+      }
+
+      .projectTypeContentAmount {
+        font-size: 14px;
+      }
+
+      .projectTypeContentLink {
+        font-size: 14px;
+      }
+    }
+  }
+}

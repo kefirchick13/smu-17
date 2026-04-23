@@ -23,7 +23,7 @@ services:
     environment:
       NODE_ENV: production
       AUTH_SECRET: ${AUTH_SECRET}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?sslmode=disable
       PG_POOL_MAX: ${PG_POOL_MAX:-10}
       PG_CONNECT_TIMEOUT_MS: ${PG_CONNECT_TIMEOUT_MS:-10000}
       FEEDBACK_SMTP_HOST: ${FEEDBACK_SMTP_HOST:-}
