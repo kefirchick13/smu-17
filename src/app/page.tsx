@@ -4,29 +4,12 @@ import { AccordionItem, AccordionList, SmuButton } from "@/shared/ui";
 import Link from "next/link";
 import LinkIcon from "@public/icons/link-icon.svg";
 import Image from "next/image";
-import ProjectsCarousel from "@/features/ProjectsCarousel/ProjectsCarousel";
-import { projectToCarouselItem } from "@/features/projects/model/mapProjectToCarousel";
-import {
-  HOME_CAROUSEL_PROJECT_LIMIT,
-  emptyProjectsFilters,
-} from "@/features/projects/server/projectFilters";
-import { listProjects } from "@/features/projects/server/getProjects";
+import { HomeProjectsCarousel } from "@/features/HomeProjectsCarousel/HomeProjectsCarousel";
 
 /** Список из БД — не кэшируем как статику (хост `db` и т.п. недоступны при `next build`). */
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  let carouselProjects: ReturnType<typeof projectToCarouselItem>[] = [];
-  try {
-    const { projects } = await listProjects({
-      filters: emptyProjectsFilters(),
-      limit: HOME_CAROUSEL_PROJECT_LIMIT,
-      offset: 0,
-    });
-    carouselProjects = projects.map(projectToCarouselItem);
-  } catch {
-    carouselProjects = [];
-  }
   return (
     <>
       <div className={styles.homePage}>
@@ -307,16 +290,7 @@ export default async function HomePage() {
             <h1 className={styles.ourProjectsTitle}>Наши проекты</h1>
             <Link href="/projects" className={styles.ourProjectsLink}>Смотреть все проекты <LinkIcon /></Link>
           </div>
-          {carouselProjects.length > 0 ? (
-            <ProjectsCarousel
-              ariaLabel="Наши проекты"
-              projects={carouselProjects}
-            />
-          ) : (
-            <p className={styles.ourProjectsEmpty} role="status">
-              Пока нет проектов в каталоге.
-            </p>
-          )}
+          <HomeProjectsCarousel />
         </section>
         <FeedBackForm id="feedbackForm" />
       </div>
