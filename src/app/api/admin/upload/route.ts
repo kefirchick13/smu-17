@@ -23,6 +23,15 @@ function safeExtFromName(name: string): string {
 export async function POST(req: Request): Promise<Response> {
   await requireAdmin();
 
+  // Netlify/Vercel serverless filesystems are not persistent and may not allow
+  // writing outside the function sandbox. Use external storage instead.
+  if (process.env.NETLIFY) {
+    return Response.json(
+      { error: "not_supported_on_netlify" },
+      { status: 501 },
+    );
+  }
+
   const form = await req.formData();
   const files = form.getAll("files").filter((x): x is File => x instanceof File);
 

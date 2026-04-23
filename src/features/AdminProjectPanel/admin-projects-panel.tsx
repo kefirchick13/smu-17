@@ -45,18 +45,16 @@ async function uploadAdminFiles(files: File[]): Promise<string[]> {
     body: form,
     credentials: "include",
   });
-  const contentType = res.headers.get("content-type") ?? "";
 
+  const contentType = res.headers.get("content-type") ?? "";
   // If not logged in, `requireAdmin()` redirects to HTML login page.
   if (res.redirected || !contentType.includes("application/json")) {
     throw new Error("not_authorized");
   }
-  if (!res.ok) throw new Error("upload_failed");
 
   const data = (await res.json()) as { urls?: string[]; error?: string };
-  if (!data.urls || data.urls.length === 0) {
-    throw new Error("upload_failed");
-  }
+  if (!res.ok) throw new Error(data.error || "upload_failed");
+  if (!data.urls || data.urls.length === 0) throw new Error("upload_failed");
   return data.urls;
 }
 
@@ -77,24 +75,35 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
       gallery: { uploading: false, error: null },
     });
 
+  const uploadErrorMessage = (e: unknown) => {
+    const msg = e instanceof Error ? e.message : "";
+    switch (msg) {
+      case "not_authorized":
+        return "Нужна активная админ-сессия. Перезайдите в админку и попробуйте ещё раз.";
+      case "not_supported_on_netlify":
+        return "На Netlify загрузка файлов на сервер недоступна. Используйте ссылки или подключите внешнее хранилище (S3/Supabase Storage).";
+      case "no_files":
+        return "Файлы не выбраны.";
+      default:
+        return "Не удалось загрузить файлы. Попробуйте ещё раз.";
+    }
+  };
+
   const handleCoverFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const f = e.currentTarget.files?.[0];
-    e.currentTarget.value = "";
+    const inputEl = e.currentTarget;
+    const f = inputEl.files?.[0];
+    inputEl.value = "";
     if (!f) return;
 
     setUploadState((s) => ({ ...s, cover: { uploading: true, error: null } }));
     try {
       const [url] = await uploadAdminFiles([f]);
       if (imageSrcRef.current) imageSrcRef.current.value = url;
-    } catch {
-      console.error("[admin upload] cover failed");
+    } catch (err) {
+      console.error("[admin upload] cover failed", err);
       setUploadState((s) => ({
         ...s,
-        cover: {
-          uploading: false,
-          error:
-            "Не удалось загрузить файл. Проверьте, что вы вошли в админку, и попробуйте ещё раз.",
-        },
+        cover: { uploading: false, error: uploadErrorMessage(err) },
       }));
       return;
     }
@@ -102,11 +111,11 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
   };
 
   const handleGalleryFilesChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const list = e.currentTarget.files?.[0];
-    e.currentTarget.value = "";
-    
-    if (!list) return;
-    const files = [list];
+    const inputEl = e.currentTarget;
+    const list = inputEl.files;
+    inputEl.value = "";
+    if (!list || list.length === 0) return;
+    const files = Array.from(list);
 
     setUploadState((s) => ({
       ...s,
@@ -118,24 +127,17 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
         const existing = galleryRef.current.value.trim();
         const next = [...(existing ? [existing] : []), ...urls].join("\n");
         galleryRef.current.value = next;
-        
       }
-    } catch {
-      console.error("[admin upload] gallery failed");
+    } catch (err) {
+      console.error("[admin upload] gallery failed", err);
       setUploadState((s) => ({
         ...s,
-        gallery: {
-          uploading: false,
-          error:
-            "Не удалось загрузить файлы. Проверьте, что вы вошли в админку, и попробуйте ещё раз.",
-        },
+        gallery: { uploading: false, error: uploadErrorMessage(err) },
       }));
       return;
     }
-      setUploadState((s) => ({
-        ...s,
-        gallery: { uploading: false, error: null },
-      }));
+    // Don't wipe error here; just stop spinner.
+    setUploadState((s) => ({ ...s, gallery: { ...s.gallery, uploading: false } }));
   };
 
   const [state, formAction, pending] = useActionState<
@@ -311,21 +313,25 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
               name="imageSrc"
               type="text"
               inputMode="url"
-              placeholder="Выберите файл — он будет загружен на сервер и ссылка подставится автоматически."
+              placeholder="https://example.com/cover.jpg"
               disabled={!dbAvailable || pending}
               defaultValue={defaults?.imageSrc}
               ref={imageSrcRef}
-              readOnly
             />
             <input
               className={styles.input}
               type="file"
               accept="image/*"
-              disabled={
-                !dbAvailable || pending || uploadState.cover.uploading
-              }
+              disabled={!dbAvailable || pending || uploadState.cover.uploading}
               onChange={handleCoverFileChange}
             />
+            <span className={styles.hint}>
+              {uploadState.cover.uploading
+                ? "Загрузка обложки…"
+                : uploadState.cover.error
+                  ? uploadState.cover.error
+                  : "Можно вставить ссылку вручную или выбрать файл."}
+            </span>
           </label>
           <label className={styles.label}>
             Галерея карточки
@@ -334,23 +340,27 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
               name="galleryRaw"
               rows={4}
               placeholder={
-                "Выберите файлы — они будут загружены на сервер и ссылки подставятся автоматически."
+                "По одному URL на строку или через запятую:\nhttps://example.com/a.jpg\nhttps://example.com/b.jpg"
               }
               disabled={!dbAvailable || pending}
               defaultValue={defaults?.galleryRaw}
               ref={galleryRef}
-              readOnly
             />
             <input
               className={styles.input}
               type="file"
               accept="image/*"
               multiple
-              disabled={
-                !dbAvailable || pending || uploadState.gallery.uploading
-              }
+              disabled={!dbAvailable || pending || uploadState.gallery.uploading}
               onChange={handleGalleryFilesChange}
             />
+            <span className={styles.hint}>
+              {uploadState.gallery.uploading
+                ? "Загрузка галереи…"
+                : uploadState.gallery.error
+                  ? uploadState.gallery.error
+                  : "Можно вставить ссылки вручную или выбрать файлы."}
+            </span>
             <span className={styles.hint}>
               Если обложка пуста, первый URL из галереи станет обложкой в списке
               проектов.
