@@ -60,6 +60,7 @@ async function uploadAdminFiles(files: File[]): Promise<string[]> {
 
 export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
   const formRef = useRef<HTMLFormElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const imageSrcRef = useRef<HTMLInputElement>(null);
   const galleryRef = useRef<HTMLTextAreaElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -176,6 +177,18 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
     }
   }, [projects, editingId]);
 
+  useEffect(() => {
+    if (!editingId) return;
+
+    // The form remounts on editingId change (key=editingId),
+    // so schedule scroll/focus after the DOM is updated.
+    const t = window.setTimeout(() => {
+      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      nameInputRef.current?.focus();
+    }, 0);
+    return () => window.clearTimeout(t);
+  }, [editingId]);
+
   const formKey = editingId ?? "create";
 
   return (
@@ -209,6 +222,7 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
               required
               disabled={!dbAvailable || pending}
               defaultValue={defaults?.name}
+              ref={nameInputRef}
             />
           </label>
           <label className={styles.label}>
