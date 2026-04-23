@@ -113,10 +113,9 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
 
   const handleGalleryFilesChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const inputEl = e.currentTarget;
-    const list = inputEl.files;
+    const files = Array.from(inputEl.files ?? []);
     inputEl.value = "";
-    if (!list || list.length === 0) return;
-    const files = Array.from(list);
+    if (files.length === 0) return;
 
     setUploadState((s) => ({
       ...s,
