@@ -7,6 +7,8 @@ import Image from "next/image";
 import { HomeProjectsCarousel } from "@/features/HomeProjectsCarousel/HomeProjectsCarousel";
 import { ProjectHomeBlocks } from "@/features/ProjectHomeBlocks/ProjectHomeBlocks";
 
+
+
 /** Список из БД — не кэшируем как статику (хост `db` и т.п. недоступны при `next build`). */
 export const dynamic = "force-dynamic";
 
