@@ -18,16 +18,14 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    env_file:
+      - .env
     environment:
       NODE_ENV: production
       AUTH_SECRET: ${AUTH_SECRET}
-      # Use internal Docker network hostname "db"
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-      # optional pg tuning
       PG_POOL_MAX: ${PG_POOL_MAX:-10}
       PG_CONNECT_TIMEOUT_MS: ${PG_CONNECT_TIMEOUT_MS:-10000}
-
-      # feedback mail (optional)
       FEEDBACK_SMTP_HOST: ${FEEDBACK_SMTP_HOST:-}
       FEEDBACK_SMTP_PORT: ${FEEDBACK_SMTP_PORT:-}
       FEEDBACK_SMTP_SECURE: ${FEEDBACK_SMTP_SECURE:-}
@@ -41,4 +39,3 @@ services:
 
 volumes:
   db_data:
-
