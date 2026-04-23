@@ -16,6 +16,8 @@ services:
     build:
       context: .
     restart: unless-stopped
+    volumes:
+      - ./uploads:/app/uploads
     depends_on:
       - db
     env_file:
