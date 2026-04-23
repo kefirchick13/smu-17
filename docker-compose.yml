@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+
+  app:
+    build:
+      context: .
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      NODE_ENV: production
+      AUTH_SECRET: ${AUTH_SECRET}
+      # Use internal Docker network hostname "db"
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      # optional pg tuning
+      PG_POOL_MAX: ${PG_POOL_MAX:-10}
+      PG_CONNECT_TIMEOUT_MS: ${PG_CONNECT_TIMEOUT_MS:-10000}
+
+      # feedback mail (optional)
+      FEEDBACK_SMTP_HOST: ${FEEDBACK_SMTP_HOST:-}
+      FEEDBACK_SMTP_PORT: ${FEEDBACK_SMTP_PORT:-}
+      FEEDBACK_SMTP_SECURE: ${FEEDBACK_SMTP_SECURE:-}
+      FEEDBACK_SMTP_USER: ${FEEDBACK_SMTP_USER:-}
+      FEEDBACK_SMTP_PASS: ${FEEDBACK_SMTP_PASS:-}
+      FEEDBACK_MAIL_TO: ${FEEDBACK_MAIL_TO:-}
+      FEEDBACK_MAIL_FROM: ${FEEDBACK_MAIL_FROM:-}
+      FEEDBACK_MAIL_FROM_NAME: ${FEEDBACK_MAIL_FROM_NAME:-}
+    ports:
+      - "${APP_HOST_PORT:-3000}:3000"
+
+volumes:
+  db_data:
+

@@ -97,18 +97,19 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
     if (!f) return;
 
     setUploadState((s) => ({ ...s, cover: { uploading: true, error: null } }));
+    let error: string | null = null;
     try {
       const [url] = await uploadAdminFiles([f]);
       if (imageSrcRef.current) imageSrcRef.current.value = url;
     } catch (err) {
       console.error("[admin upload] cover failed", err);
+      error = uploadErrorMessage(err);
+    } finally {
       setUploadState((s) => ({
         ...s,
-        cover: { uploading: false, error: uploadErrorMessage(err) },
+        cover: { uploading: false, error },
       }));
-      return;
     }
-    setUploadState((s) => ({ ...s, cover: { uploading: false, error: null } }));
   };
 
   const handleGalleryFilesChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -121,6 +122,7 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
       ...s,
       gallery: { uploading: true, error: null },
     }));
+    let error: string | null = null;
     try {
       const urls = await uploadAdminFiles(files);
       if (galleryRef.current) {
@@ -130,14 +132,13 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
       }
     } catch (err) {
       console.error("[admin upload] gallery failed", err);
+      error = uploadErrorMessage(err);
+    } finally {
       setUploadState((s) => ({
         ...s,
-        gallery: { uploading: false, error: uploadErrorMessage(err) },
+        gallery: { uploading: false, error },
       }));
-      return;
     }
-    // Don't wipe error here; just stop spinner.
-    setUploadState((s) => ({ ...s, gallery: { ...s.gallery, uploading: false } }));
   };
 
   const [state, formAction, pending] = useActionState<
