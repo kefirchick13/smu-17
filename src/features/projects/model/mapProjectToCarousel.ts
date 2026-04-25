@@ -7,6 +7,9 @@ const TYPE_FALLBACK_IMAGE: Record<Project["type"], string> = {
   industrial: "/images/industrial-buildings.png",
   angar: "/images/angars.png",
   warehouse: "/images/warehouses.png",
+  cottage: "/images/into-section.png",
+  design: "/images/into-section.png",
+  other: "/images/into-section.png",
 };
 
 export function projectToCarouselItem(project: Project): ProjectsCarouselProject {
