@@ -39,7 +39,7 @@ export default function Header({ isAdmin = false }: Props) {
             Главная
           </Link>
           <Link className={styles.navLink} href="/projects">
-            Проекты
+            Проекты и объекты
           </Link>
           <Link className={styles.navLink} href="/about">
             О нас
