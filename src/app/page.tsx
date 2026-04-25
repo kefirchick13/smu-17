@@ -84,9 +84,8 @@ export default async function HomePage() {
             </div>
           </div>
         </section>
-        
-        <ProjectHomeBlocks />  
         <ServicesSection />
+        <ProjectHomeBlocks />  
         <section className={styles.ourProjects}>
           <div className={styles.ProjectsTitleContainer}>
             <h1 className={styles.ourProjectsTitle}>Наши проекты</h1>
