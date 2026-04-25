@@ -1,6 +1,6 @@
+import type { Metadata } from "next";
 import styles from "./page.module.scss";
 import { FeedBackForm } from "@/shared/ui";
-import HowWeWork from "@/features/HowWeWork/HowWeWork";
 import Image from "next/image";
 import {
   COMPANY_EMAIL,
@@ -8,6 +8,21 @@ import {
   COMPANY_PHONE_TEL,
 } from "@/shared/constants/companyContacts";
 import Link from "next/link";
+import { ServicesSection } from "@/features/ServicesSection/ServicesSection";
+import { getSiteUrl } from "@/shared/constants/seo";
+
+export const metadata: Metadata = {
+  title: "О компании СМУ-17 — подрядчик в Санкт-Петербурге",
+  description:
+    "О компании СМУ-17: опыт в строительстве промышленных объектов, складов, ангаров и коттеджей в Санкт-Петербурге и Ленинградской области.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "О компании СМУ-17 — подрядчик в Санкт-Петербурге",
+    description:
+      "Опыт, сертификаты и реквизиты строительного подрядчика СМУ-17.",
+    url: "/about",
+  },
+};
 
 export default function AboutPage() {
   const facts = [
@@ -17,61 +32,54 @@ export default function AboutPage() {
     { value: "30", label: "сданных проектов" },
     { value: "55", label: "сотрудников в штате" },
   ] as const;
-
-  const services = [
+  const certificates = [
     {
-      title: "Под ключ",
-      imageSrc: "/images/services/Rectangle 180.png",
-      body: "Полный цикл работ: проектирование, строительство, инженерные сети и сдача объекта одному подрядчику — без размывания ответственности.",
+      title: "Свидетельство СРО",
+      previewSrc: "/images/sertificates/sertif1.jpg",
+      pdfSrc: "/images/sertificates/01_Свидетельство СРО.pdf",
     },
     {
-      title: "Фундамент",
-      imageSrc: "/images/services/Rectangle 180 (1).png",
-      body: "Столбчатые, ленточные и плитные основания, расчёт нагрузок и грунтов, устройство подушек и гидроизоляция под ваш тип здания.",
+      title: "Свидетельство на проектирование",
+      previewSrc: "/images/sertificates/sertif2.jpg",
+      pdfSrc: "/images/sertificates/02_Свидетельство проектирование.pdf",
     },
     {
-      title: "Металлокаркас",
-      imageSrc: "/images/services/Rectangle 180 (2).png",
-      body: "Монтаж несущего каркаса: колонны, фермы, связи и узлы. Сварка и болтовые соединения, антикоррозийная защита и соответствие проекту.",
+      title: "ИСО 9001 (проектирование)",
+      previewSrc: "/images/sertificates/sertif3.jpg",
+      pdfSrc: "/images/sertificates/03_ИСО 9001_Проектирование от 23г (1).pdf",
     },
     {
-      title: "Кровля",
-      imageSrc: "/images/services/Rectangle 180 (3).png",
-      body: "Плоские и скатные кровельные системы для промышленных зданий: гидроизоляция, утепление, водостоки и узлы примыкания.",
-    },
-    {
-      title: "Бетонные работы",
-      imageSrc: "/images/services/Rectangle 180 (4).png",
-      body: "Монолитный железобетон, устройство плит и покрытий, контроль геометрии и вибрирование, подготовка под технологическое оборудование.",
-    },
-    {
-      title: "Инженерные системы",
-      imageSrc: "/images/services/Rectangle 180 (5).png",
-      body: [
-        "Вентиляция",
-        "Автоматизация",
-        "Водопроводы",
-        "Системы пожаротушения",
-        "Системы водо-, пневмо- и газоснабжения (кроме природного газа)",
-        "Канализация",
-        "Электроснабжение",
-        "Слаботочные системы",
-      ],
-    },
-    {
-      title: "Промышленные полы",
-      imageSrc: "/images/services/Rectangle 180 (6).png",
-      body: "Устройство стяжек, топпинг и упрочнённые покрытия, полы под нагрузку от техники и складской техники с плоскостью по допускам.",
-    },
-    {
-      title: "Ограждающие конструкции",
-      imageSrc: "/images/services/Rectangle 180 (7).png",
-      body: "Стены и перегородки, сэндвич-панели и навесные фасады: тепло- и шумоизоляция, герметизация узлов и монтаж по проекту.",
+      title: "ИСО 9001 (строительство)",
+      previewSrc: "/images/sertificates/sertif4.jpg",
+      pdfSrc: "/images/sertificates/04_ИСО 9001_Строительство от 23г.pdf",
     },
   ] as const;
+  const siteUrl = getSiteUrl();
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Главная",
+        item: `${siteUrl}/`,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "О нас",
+        item: `${siteUrl}/about`,
+      },
+    ],
+  };
 
   return (
     <main className={styles.aboutPage}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
       <section className={styles.aboutHero}>
         <div className={styles.aboutHeroContent}>
           <p className={styles.breadcrumbs}>Главная / О нас</p>
@@ -107,45 +115,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className={styles.aboutServices} aria-label="Услуги">
-        <h2 className={styles.sectionTitle}>Услуги</h2>
-        <div className={styles.servicesGrid}>
-          {services.map((s) => (
-            <article
-              key={s.title}
-              className={styles.serviceCard}
-              tabIndex={0}
-            >
-              <div className={styles.serviceImage}>
-                <Image
-                  src={s.imageSrc}
-                  alt={s.title}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                />
-              </div>
-              <div className={styles.serviceTitleBar}>
-                <div className={styles.serviceTitle}>{s.title}</div>
-                <div className={styles.serviceDescription}>
-                  {Array.isArray(s.body) ? (
-                    <ul className={styles.serviceDescriptionList}>
-                      {s.body.map((line) => (
-                        <li key={line}>{line}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className={styles.serviceDescriptionText}>{s.body}</p>
-                  )}
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.aboutHow} aria-label="Как мы работаем">
-        <HowWeWork />
-      </section>
+      <ServicesSection />
 
       <section className={styles.aboutCompanies} aria-label="О компаниях, с которыми мы реализовали проекты">
         <h2 className={styles.sectionTitle}>Компании, с которыми мы реализовали проекты</h2>
@@ -161,7 +131,36 @@ export default function AboutPage() {
           по вашему типу объекта и задачам.
         </p>
       </section>
-      
+
+      <section
+        id="certificates"
+        className={styles.aboutCertificates}
+        aria-label="Свидетельства и сертификаты"
+      >
+        <h2 className={styles.sectionTitle}>Свидетельства и сертификаты</h2>
+        <div className={styles.certificatesGrid}>
+          {certificates.map((certificate) => (
+            <a
+              key={certificate.title}
+              href={certificate.pdfSrc}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.certificateCard}
+              aria-label={`${certificate.title} (открыть PDF)`}
+            >
+              <div className={styles.certificatePreview}>
+                <Image
+                  src={certificate.previewSrc}
+                  alt={certificate.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                />
+              </div>
+              <span className={styles.certificateTitle}>{certificate.title}</span>
+            </a>
+          ))}
+        </div>
+      </section>
 
       <section className={styles.aboutRequisites} aria-labelledby="requisites-heading">
         <h2 id="requisites-heading" className={styles.requisitesTitle}>

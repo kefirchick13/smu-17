@@ -29,18 +29,14 @@ type Props = {
 };
 
 const typeTabs: Array<{ id: "all" | ProjectType; label: string }> = [
-  { id: "all", label: "Все объекты" },
+  { id: "all", label: "Все объекты и проекты" },
   { id: "industrial", label: "Промышленные здания" },
   { id: "angar", label: "Ангары" },
   { id: "warehouse", label: "Склады" },
+  { id: "cottage", label: "Коттеджи" },
+  { id: "design", label: "Проектирование" },
+  { id: "other", label: "Прочие объекты" },
 ];
-
-const tabBg: Record<"all" | ProjectType, string> = {
-  all: "/images/into-section.png",
-  industrial: "/images/industrial-buildings.png",
-  angar: "/images/angars.png",
-  warehouse: "/images/warehouses.png",
-};
 
 export function ProjectsClient({
   initialProjects,
@@ -136,70 +132,73 @@ export function ProjectsClient({
 
   return (
     <div className={styles.projectsPage}>
-      <div className={styles.projectsTopRow}>
-        <nav className={styles.tabs} aria-label="Фильтр по типу">
-          {typeTabs.map((t) => (
-            <button
-              key={t.id}
-              type="button"
-              className={`${styles.tab} ${filters.type === t.id ? styles.tabActive : ""}`}
-              onClick={() =>
-                replaceFilters({
-                  ...filters,
-                  search: debouncedSearch,
-                  type: t.id,
-                })
-              }
-              style={{ backgroundImage: `url('${tabBg[t.id]}')` }}
-            >
-              <span className={styles.tabLabel}>{t.label}</span>
-            </button>
-          ))}
-        </nav>
-      </div>
-
       <div className={styles.projectsToolbar}>
         <div className={styles.toolbarLeft}>
-          <div className={styles.statusChips} aria-label="Фильтр по статусу">
-            <button
-              type="button"
-              className={`${styles.chip} ${filters.status === "all" ? styles.chipActive : ""}`}
-              onClick={() =>
-                replaceFilters({
-                  ...filters,
-                  search: debouncedSearch,
-                  status: "all",
-                })
-              }
-            >
-              Все
-            </button>
-            <button
-              type="button"
-              className={`${styles.chip} ${filters.status === "done" ? styles.chipActive : ""}`}
-              onClick={() =>
-                replaceFilters({
-                  ...filters,
-                  search: debouncedSearch,
-                  status: "done",
-                })
-              }
-            >
-              Сдан
-            </button>
-            <button
-              type="button"
-              className={`${styles.chip} ${filters.status === "in_progress" ? styles.chipActive : ""}`}
-              onClick={() =>
-                replaceFilters({
-                  ...filters,
-                  search: debouncedSearch,
-                  status: "in_progress",
-                })
-              }
-            >
-              В работе
-            </button>
+          <div className={styles.filterGroup}>
+            <div className={styles.filterTitle}>Тип объекта</div>
+            <div className={styles.typeChips} aria-label="Фильтр по типу">
+              {typeTabs.map((t) => (
+                <button
+                  key={t.id}
+                  type="button"
+                  className={`${styles.chip} ${filters.type === t.id ? styles.chipActive : ""}`}
+                  onClick={() =>
+                    replaceFilters({
+                      ...filters,
+                      search: debouncedSearch,
+                      type: t.id,
+                    })
+                  }
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.filterGroup}>
+            <div className={styles.filterTitle}>Статус</div>
+            <div className={styles.statusChips} aria-label="Фильтр по статусу">
+              <button
+                type="button"
+                className={`${styles.chip} ${filters.status === "all" ? styles.chipActive : ""}`}
+                onClick={() =>
+                  replaceFilters({
+                    ...filters,
+                    search: debouncedSearch,
+                    status: "all",
+                  })
+                }
+              >
+                Все
+              </button>
+              <button
+                type="button"
+                className={`${styles.chip} ${filters.status === "done" ? styles.chipActive : ""}`}
+                onClick={() =>
+                  replaceFilters({
+                    ...filters,
+                    search: debouncedSearch,
+                    status: "done",
+                  })
+                }
+              >
+                Сдан
+              </button>
+              <button
+                type="button"
+                className={`${styles.chip} ${filters.status === "in_progress" ? styles.chipActive : ""}`}
+                onClick={() =>
+                  replaceFilters({
+                    ...filters,
+                    search: debouncedSearch,
+                    status: "in_progress",
+                  })
+                }
+              >
+                В работе
+              </button>
+            </div>
           </div>
 
           <div className={styles.search}>

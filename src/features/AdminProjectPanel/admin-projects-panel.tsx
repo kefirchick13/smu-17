@@ -248,6 +248,9 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
                 <option value="industrial">Промышленное здание</option>
                 <option value="angar">Ангар</option>
                 <option value="warehouse">Склад</option>
+                <option value="cottage">Коттедж</option>
+                <option value="design">Проектирование</option>
+                <option value="other">Прочие объекты</option>
               </select>
             </label>
             <label className={styles.label}>

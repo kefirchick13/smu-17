@@ -6,18 +6,22 @@
 
 .homePageIntro {
   /* 1440×874 — высота блока от ширины, картинка целиком без обрезки */
-  width: 100%;
-  aspect-ratio: 1440 / 874;
-  box-sizing: border-box;
+  background-image: url(/images/into-section.png);
+  background-position: center;
+  background-size: cover;
+  align-items: center;
+  min-height: 420px;
+  padding: 0 48px;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  position: relative;
+  overflow: hidden;
   gap: 16px;
   background-image: url("/images/into-section.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 0 16px;
+  }
+  
 
   &::before {
     content: "";
@@ -42,9 +46,11 @@
     }
 
     .homePageIntroDescription {
-      font-size: 32px;
-      font-weight: 500;
-      max-width: 1000px;
+      opacity: .95;
+      max-width: 720px;
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.5;  
     }
 
     .homePageIntroButtonsContainer {
@@ -52,6 +58,15 @@
       gap: 16px;
       width: 100%;
       max-width: 600px;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .homePageIntroButtons {
+      width: 100%;
+      display: flex;
+      gap: 16px;
+
     }
   }
 }

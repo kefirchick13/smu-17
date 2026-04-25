@@ -30,7 +30,14 @@ function formatInsertError(e: unknown): string {
   return `Не удалось сохранить: ${msg}`;
 }
 
-const TYPES: readonly ProjectType[] = ["industrial", "angar", "warehouse"];
+const TYPES: readonly ProjectType[] = [
+  "industrial",
+  "angar",
+  "warehouse",
+  "cottage",
+  "design",
+  "other",
+];
 const STATUSES: readonly ProjectStatus[] = ["done", "in_progress"];
 
 function parseTags(raw: string): string[] {

@@ -127,130 +127,6 @@
   line-height: 1.35;
 }
 
-.aboutServices {
-  padding: 0 48px;
-}
-.servicesGrid {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.serviceCard {
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  aspect-ratio: 3 / 4;
-  outline: none;
-}
-
-.serviceCard:focus-visible {
-  box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
-}
-
-.serviceImage {
-  position: absolute;
-  inset: 0;
-  transition: transform 0.45s ease;
-  will-change: transform;
-}
-
-.serviceCard:hover .serviceImage,
-.serviceCard:focus-within .serviceImage {
-  transform: scale(1.06);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .serviceImage {
-    transition: none;
-  }
-
-  .serviceCard:hover .serviceImage,
-  .serviceCard:focus-within .serviceImage {
-    transform: none;
-  }
-}
-
-.serviceImage :global(img) {
-  object-fit: cover;
-}
-
-.serviceTitleBar {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 16px;
-  background: rgba(0, 0, 0, 0.58);
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-  z-index: 1;
-}
-
-.serviceTitle {
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  line-height: 1.2;
-  flex-shrink: 0;
-}
-
-.serviceDescription {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition:
-    max-height 0.45s ease,
-    opacity 0.35s ease,
-    margin-top 0.35s ease;
-}
-
-.serviceCard:hover .serviceDescription,
-.serviceCard:focus-within .serviceDescription {
-  max-height: min(52vh, 28rem);
-  opacity: 1;
-  margin-top: 10px;
-}
-
-.serviceDescriptionText {
-  margin: 0;
-  font-size: 13px;
-  line-height: 1.45;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.serviceDescriptionList {
-  margin: 0;
-  padding-left: 1.15em;
-  font-size: 12px;
-  line-height: 1.4;
-  font-weight: 400;
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.serviceDescriptionList li + li {
-  margin-top: 4px;
-}
-
-@media (hover: none) {
-  .serviceDescription {
-    max-height: min(55vh, 20rem);
-    opacity: 1;
-    margin-top: 8px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .serviceCard:hover .serviceImage,
-  .serviceCard:focus-within .serviceImage {
-    transform: none;
-  }
-}
-
-
 .aboutText {
   margin: 16px 0 0;
   color: var(--color-text-muted);
@@ -285,6 +161,58 @@
 
 .aboutCompanies {
   padding: 0 48px;
+}
+
+.aboutCertificates {
+  padding: 0 48px;
+}
+
+.certificatesGrid {
+  margin-top: 16px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.certificateCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px;
+  background: var(--color-surface);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.certificateCard:hover,
+.certificateCard:focus-visible {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 24%, transparent);
+  outline: none;
+}
+
+.certificatePreview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+.certificatePreview :global(img) {
+  object-fit: cover;
+}
+
+.certificateTitle {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
 }
 
 .aboutRequisites {
@@ -464,9 +392,9 @@
   }
 
   .aboutFacts,
-  .aboutServices,
   .aboutHow,
-  .aboutCompanies {
+  .aboutCompanies,
+  .aboutCertificates {
     padding: 0 16px;
   }
 
@@ -480,51 +408,15 @@
     grid-template-columns: 1fr 1fr;
   }
 
-  .servicesGrid {
+  .certificatesGrid {
     grid-template-columns: 1fr 1fr;
   }
-
-  .serviceTitle {
-    font-size: 16px;
-  }
-
   /* HowWeWork section has its own layout */
 }
 
 @media (max-width: 480px) {
-  .servicesGrid {
+  .certificatesGrid {
     grid-template-columns: 1fr;
-  }
-
-  .serviceCard {
-    aspect-ratio: auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .serviceImage {
-    position: relative;
-    inset: auto;
-    height: 220px;
-  }
-
-  .serviceTitleBar {
-    position: relative;
-    left: auto;
-    right: auto;
-    bottom: auto;
-  }
-
-  .serviceDescription {
-    max-height: none;
-    opacity: 1;
-    margin-top: 8px;
-    overflow: visible;
-  }
-
-  .serviceDescriptionText,
-  .serviceDescriptionList {
-    overflow-wrap: anywhere;
   }
 }
 

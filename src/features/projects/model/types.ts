@@ -1,6 +1,12 @@
 export type ProjectId = string;
 
-export type ProjectType = "industrial" | "angar" | "warehouse";
+export type ProjectType =
+  | "industrial"
+  | "angar"
+  | "warehouse"
+  | "cottage"
+  | "design"
+  | "other";
 export type ProjectStatus = "done" | "in_progress";
 
 export type Project = {

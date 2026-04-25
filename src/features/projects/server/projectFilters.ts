@@ -23,6 +23,9 @@ const projectTypes: readonly ProjectType[] = [
   "industrial",
   "angar",
   "warehouse",
+  "cottage",
+  "design",
+  "other",
 ];
 
 const projectStatuses: readonly ProjectStatus[] = ["done", "in_progress"];

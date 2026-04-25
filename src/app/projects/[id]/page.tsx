@@ -6,6 +6,7 @@ import { ProjectPhotoGallery } from "@/features/ProjectPhotoGallery/ProjectPhoto
 import { formatWorkPeriod } from "@/features/projects/model/formatProjectDates";
 import { projectTypeLabel } from "@/features/projects/model/projectLabels";
 import { getProjectById } from "@/features/projects/server/getProjects";
+import { getSiteUrl } from "@/shared/constants/seo";
 import styles from "./page.module.scss";
 
 export const dynamic = "force-dynamic";
@@ -21,8 +22,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: "Проект не найден" };
   }
   return {
-    title: `${project.name} — проекты`,
-    description: project.description ?? project.detailText,
+    title: `${project.name} — проект`,
+    description:
+      project.description ??
+      project.detailText ??
+      `Проект ${project.name} от СМУ-17 в Санкт-Петербурге`,
+    alternates: {
+      canonical: `/projects/${project.id}`,
+    },
+    openGraph: {
+      title: `${project.name} — проект СМУ-17`,
+      description:
+        project.description ??
+        project.detailText ??
+        `Проект ${project.name} от СМУ-17`,
+      url: `/projects/${project.id}`,
+      images: project.imageSrc ? [{ url: project.imageSrc }] : undefined,
+    },
   };
 }
 
@@ -44,9 +60,24 @@ export default async function ProjectCardPage({ params }: Props) {
         : [];
   const hasStages = Boolean(project.workStages?.length);
   const hasBody = Boolean(bodyText);
+  const siteUrl = getSiteUrl();
+  const projectJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "CreativeWork",
+    name: project.name,
+    url: `${siteUrl}/projects/${project.id}`,
+    image: project.imageSrc,
+    description: project.description ?? project.detailText,
+    address: project.address,
+    keywords: [projectTypeLabel(project.type), statusLabel],
+  };
 
   return (
     <main className={styles.main}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(projectJsonLd) }}
+      />
       <nav className={styles.breadcrumbs} aria-label="Навигация">
         <Link href="/">Главная</Link>
         <span className={styles.crumbSep} aria-hidden>
