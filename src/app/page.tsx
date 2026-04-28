@@ -63,25 +63,19 @@ export default async function HomePage() {
             <p className={styles.homePageIntroDescription}>
             СМУ 17 | Санкт Петербург и ЛО | Строим с 2008 года!
               <br /> Проектирование, строительство, реконструкция:
-              <br />- ангары, склады, производственные цеха
-              <br />- коттеджи, здания и сооружения другого назначения
+              <br />- ангары, склады, производственные цеха, коттеджи, здания и сооружения другого назначения
               <br /> Инженерные системы (всё, кроме природного газа и внешнего электроснабжения):
-              <br />- отопление, вентиляция, водоснабжение, канализация
-              <br />- внутренние электрические сети, слаботочные системы и др.
+              <br /> - отопление, вентиляция, водоснабжение, канализация, внутренние электрические сети, слаботочные системы и др.
             </p>
             <div className={styles.homePageIntroButtonsContainer}>
-              <div className={styles.homePageIntroButtons}>
               <SmuButton href="/projects" variant="secondary">
                 Наши проекты
               </SmuButton>
               <SmuButton href="/about#certificates" variant="secondary">
                 Свидетельства и сертификаты
               </SmuButton>
-              </div>
-              <div className={styles.homePageIntroButtons}> 
               <SmuButton href="#feedbackForm">Оставить заявку</SmuButton>
               </div>
-            </div>
           </div>
         </section>
         <ServicesSection />

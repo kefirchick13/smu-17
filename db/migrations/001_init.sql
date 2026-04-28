@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS projects (
   name TEXT NOT NULL,
   description TEXT,
   detail_text TEXT,
-  type TEXT NOT NULL CHECK (type IN ('industrial', 'angar', 'warehouse', 'cottage', 'design', 'other')),
+  type TEXT NOT NULL CHECK (type IN ('industrial', 'warehouse', 'cottage', 'design', 'other')),
   status TEXT NOT NULL CHECK (status IN ('done', 'in_progress')),
   tags TEXT[] DEFAULT ARRAY[]::TEXT[],
   area_m2 INTEGER,

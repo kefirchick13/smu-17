@@ -31,7 +31,6 @@ type Props = {
 const typeTabs: Array<{ id: "all" | ProjectType; label: string }> = [
   { id: "all", label: "Все объекты и проекты" },
   { id: "industrial", label: "Промышленные здания" },
-  { id: "angar", label: "Ангары" },
   { id: "warehouse", label: "Склады" },
   { id: "cottage", label: "Коттеджи" },
   { id: "design", label: "Проектирование" },

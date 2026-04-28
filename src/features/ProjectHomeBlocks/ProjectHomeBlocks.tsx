@@ -8,15 +8,15 @@ export function ProjectHomeBlocks() {
 
   const [industrialProjectsCount, setIndustrialProjectsCount] = useState(0);
   const [warehouseProjectsCount, setWarehouseProjectsCount] = useState(0);
-  const [angarProjectsCount, setAngarProjectsCount] = useState(0);
+  const [designProjectsCount, setDesignProjectsCount] = useState(0);
 
   const setProjectsCount = useCallback(async () => {
     const industrialProjects = await fetch("/api/projects?type=industrial");
     const warehouseProjects = await fetch("/api/projects?type=warehouse");
-    const angarProjects = await fetch("/api/projects?type=angar");
+    const designProjects = await fetch("/api/projects?type=design");
     setIndustrialProjectsCount((await industrialProjects.json()).projects.length);
     setWarehouseProjectsCount((await warehouseProjects.json()).projects.length);
-    setAngarProjectsCount((await angarProjects.json()).projects.length);
+    setDesignProjectsCount((await designProjects.json()).projects.length);
   }, []);
 
   useEffect(() => { 
@@ -36,7 +36,7 @@ export function ProjectHomeBlocks() {
                 href="/projects?type=industrial"
                 className={styles.projectTypeContainer}
                 style={{
-                  backgroundImage: "url('/images/industrial-buildings.png')",
+                  backgroundImage: "url('/images/industrial-buildings.jpg')",
                 }}
               >
                 <div className={styles.projectTypeContent}>
@@ -62,11 +62,11 @@ export function ProjectHomeBlocks() {
                 </div>
               </Link>
 
-              <Link href="/projects?type=angar" className={styles.projectTypeContainer} style={{ backgroundImage: "url('/images/angars.png')", }}>
+              <Link href="/projects?type=design" className={styles.projectTypeContainer} style={{ backgroundImage: "url('/images/design-projects.jpg')", }}>
                 <div className={styles.projectTypeContent}>
-                  <div className={styles.projectTypeContentTitle}>Ангары</div>
+                  <div className={styles.projectTypeContentTitle}>Проектирование</div>
                   <div className={styles.projectTypeContentDescription}>
-                    <div className={styles.projectTypeContentAmount}>{angarProjectsCount} объект(-ов)</div>
+                    <div className={styles.projectTypeContentAmount}>{designProjectsCount} объект(-ов)</div>
                     <div className={styles.projectTypeContentLink} >Смотреть проекты <LinkIcon /></div>
                   </div>
                 </div>

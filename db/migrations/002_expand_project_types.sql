@@ -1,5 +1,5 @@
 -- Расширяет допустимые типы проектов:
--- cottage, design, other
+-- industrial, warehouse, cottage, design, other
 -- Применение: psql "$DATABASE_URL" -f db/migrations/002_expand_project_types.sql
 
 DO $$
@@ -25,7 +25,6 @@ BEGIN
     CHECK (
       type IN (
         'industrial',
-        'angar',
         'warehouse',
         'cottage',
         'design',
