@@ -246,7 +246,6 @@ export function AdminProjectsPanel({ projects, dbAvailable }: Props) {
                 defaultValue={defaults?.type ?? "industrial"}
               >
                 <option value="industrial">Промышленное здание</option>
-                <option value="angar">Ангар</option>
                 <option value="warehouse">Склад</option>
                 <option value="cottage">Коттедж</option>
                 <option value="design">Проектирование</option>

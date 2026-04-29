@@ -10,8 +10,6 @@ export function projectTypeLabel(type: ProjectType): string {
       return "Прочий объект";
     case "warehouse":
       return "Склад";
-    case "angar":
-      return "Ангар";
     case "industrial":
       return "Промышленный объект";
     default:

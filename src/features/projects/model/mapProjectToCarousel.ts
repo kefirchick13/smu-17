@@ -4,8 +4,7 @@ import type { Project } from "./types";
 import { projectTypeLabel } from "./projectLabels";
 
 const TYPE_FALLBACK_IMAGE: Record<Project["type"], string> = {
-  industrial: "/images/industrial-buildings.png",
-  angar: "/images/angars.png",
+  industrial: "/images/industrial-buildings.jpg",
   warehouse: "/images/warehouses.png",
   cottage: "/images/into-section.png",
   design: "/images/into-section.png",
