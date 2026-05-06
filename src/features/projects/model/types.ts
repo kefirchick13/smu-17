@@ -2,7 +2,6 @@ export type ProjectId = string;
 
 export type ProjectType =
   | "industrial"
-  | "angar"
   | "warehouse"
   | "cottage"
   | "design"

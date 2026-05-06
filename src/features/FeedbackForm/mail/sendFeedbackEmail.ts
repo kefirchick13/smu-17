@@ -103,6 +103,10 @@ export async function sendFeedbackEmail(payload: FeedbackPayload): Promise<void>
       "Auto-Submitted": "auto-generated",
       "X-Auto-Response-Suppress": "All",
     },
+  }).then((data) => {
+    console.log("Feedback email sent", data);
+  }).catch((error) => {
+    console.error("Feedback email failed", error);
   });
 }
 
