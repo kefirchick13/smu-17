@@ -21,7 +21,6 @@ export const HOME_CAROUSEL_PROJECT_LIMIT = 5;
 
 const projectTypes: readonly ProjectType[] = [
   "industrial",
-  "angar",
   "warehouse",
   "cottage",
   "design",
