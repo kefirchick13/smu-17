@@ -32,7 +32,6 @@ function formatInsertError(e: unknown): string {
 
 const TYPES: readonly ProjectType[] = [
   "industrial",
-  "angar",
   "warehouse",
   "cottage",
   "design",
