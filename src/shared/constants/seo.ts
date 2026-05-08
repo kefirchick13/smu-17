@@ -1,4 +1,4 @@
-const DEFAULT_SITE_URL = "http://smu17.su";
+const DEFAULT_SITE_URL = "http://smu-17.su";
 
 export const SITE_NAME = "СМУ-17";
 export const DEFAULT_TITLE =
