@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import FeedBackForm from "@/features/FeedbackForm/FeedBackForm";
 import styles from "./page.module.scss";
-import { AccordionItem, AccordionList, SmuButton } from "@/shared/ui";
+import { SmuButton } from "@/shared/ui";
 import Link from "next/link";
 import LinkIcon from "@public/icons/link-icon.svg";
-import Image from "next/image";
 import { HomeProjectsCarousel } from "@/features/HomeProjectsCarousel/HomeProjectsCarousel";
 import { ProjectHomeBlocks } from "@/features/ProjectHomeBlocks/ProjectHomeBlocks";
 import { ServicesSection } from "@/features/ServicesSection/ServicesSection";
@@ -26,6 +25,18 @@ export const metadata: Metadata = {
     description:
       "Генподряд, проектирование и строительство в Санкт-Петербурге и Ленинградской области.",
     url: "/",
+  },
+  keywords: [
+    "строительство промышленных объектов спб",
+    "строителство складов спб",
+    "строителство ангаров спб",
+    "строителство коттеджей спб",
+    "генподряд санкт-петербург",
+    "проектирование промышленных зданий",
+  ],
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
